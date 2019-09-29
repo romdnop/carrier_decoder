@@ -108,9 +108,7 @@ float Decoder::getTemp(QByteArray *array)
 
 QDate Decoder::getDate(char *array)
 {
-    QDate *date = new QDate(static_cast <int>(array[2])+2000, static_cast <int>(array[1]),static_cast <int>(array[0]));
-    //date.setDate();
-    return *date;
+    return QDate(static_cast <int>(array[2])+2000, static_cast <int>(array[1]),static_cast <int>(array[0]));
 }
 
 
