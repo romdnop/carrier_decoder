@@ -13,13 +13,10 @@ int main(int argc, char *argv[])
     //QFile file("C:\\Users\\Dima\\Desktop\\develop app for interrogator\\reports_print\\19_09\\console_app\\build-decoder-Desktop-Debug\\debug\\TEMU9483543.dcx");
 
 
-    QFile file("C:\\Users\\Dima\\Desktop\\develop app for interrogator\\reports_print\\18_09\\CRLU1395760_1909172325_30d.dcx");
-//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-//        qDebug() << "Cannot open file";
-        //return;
+    QFile file("C:\\Users\\Dima\\Desktop\\decoder\\carrier_decoder\\CRLU1396469.dcx");
 
-   Decoder *decoder = new Decoder(&file);
-   //decoder->getContainerId();
+    Decoder *decoder = new Decoder(&file);
+    //decoder->getContainerId();
     decoder->getContainerInfo();
     return a.exec();
 }

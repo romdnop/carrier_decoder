@@ -23,6 +23,7 @@ private:
 
     const static int interrogationDateOffset = 0x82;
     bool checkFile(void);
+    char recordStart[] = {0x51,0x51,0x51,0x5A,0x5A};
 public:
     Decoder();
     Decoder(QFile *);
