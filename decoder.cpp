@@ -1,4 +1,5 @@
 #include "decoder.h"
+#include "record.h"
 
 Decoder::Decoder()
 {
@@ -110,6 +111,81 @@ QDate Decoder::getDate(char *array)
 {
     return QDate(static_cast <int>(array[2])+2000, static_cast <int>(array[1]),static_cast <int>(array[0]));
 }
+
+
+bool Decoder::printLog()
+{
+    int recordsCount = 0;
+    int eventRecordsCount = 0;
+    int containerRecord = 0;
+    int tempRecordsCount = 0;
+    int calRecords = 0;
+    int headRecords = 0;
+    //int j=0;
+    qDebug() << "File size: "<< data.size() << " bytes.";
+    //QByteArrayMatcher matcher(packageStart);
+    int pos = 0;
+
+    Record record;
+    while((pos < data.size()) && (pos != -1))
+    {
+        //qDebug() << pos;
+        QByteArray dataChunk = data.mid(pos, data.size());
+        record = findNextRecord(static_cast<QByteArray *>(&dataChunk),static_cast <int *>(&pos));
+        record.printRaw();
+        recordsCount++;
+    }
+
+
+    //qDebug() << data.indexOf(packageStart);
+
+
+          qDebug() << "Found "<<recordsCount<<" records.";
+          qDebug() << "Container records: "<<containerRecord;
+          qDebug() << "Callibration records: "<<calRecords;
+          qDebug() << "Head records: "<<headRecords;
+          qDebug() << "Events records: "<<eventRecordsCount;
+          qDebug() << "Temp records: "<<tempRecordsCount;
+
+
+    //QDataStream dataStream(file);
+    //QString log = dataStream.readAll();
+    //qDebug() << log.size();
+
+    return false;
+}
+
+
+Record Decoder::findNextRecord(QByteArray *data, int *pos)
+{
+    Record record;
+    int currentRecordLength = 0;
+    //qDebug() << *data;
+
+    *pos = data->indexOf(packageStart,*pos);
+    if(*pos == -1)
+    {
+        //*pos += packageStartLength;
+        return record;
+    }
+    //data->at(0);
+
+    //currentRecordLength = static_cast <unsigned int> (data[*pos+packageStartLength+1]);
+    //currentRecordLength |= static_cast <unsigned int> (data[*pos+packageStartLength+2]);
+
+    currentRecordLength = ((static_cast<unsigned int>(data->at(*pos+packageStartLength+packageTypeLength+1)) & 0xFF) << 8);
+    currentRecordLength |= (static_cast<unsigned int>(data->at(*pos+packageStartLength+packageTypeLength)) & 0xFF);
+    //currentRecordLength = *data[(*pos+packageStartLength+1)];
+
+    *pos+=(currentRecordLength+5+2+2+4-1);
+    //qDebug() << "Pos:" << QString("%1").arg(*pos,0,16) << "Length:" << QString("%1").arg(currentRecordLength,0,16);
+    //record.setRawData(data, (currentRecordLength+packageStartLength+4+2));
+    record.setRecord((data), *pos, currentRecordLength);
+    return record;
+}
+
+
+
 
 
 

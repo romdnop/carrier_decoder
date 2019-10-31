@@ -18,5 +18,6 @@ int main(int argc, char *argv[])
     Decoder *decoder = new Decoder(&file);
     //decoder->getContainerId();
     decoder->getContainerInfo();
+    decoder->printLog();
     return a.exec();
 }

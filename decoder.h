@@ -5,11 +5,14 @@
 #include <QDebug>
 #include <QDate>
 #include <QTime>
+#include <QByteArrayMatcher>
+#include "record.h"
 
 class Decoder
 {
     //Q_OBJECT
 private:
+
     QFile *file;
     QByteArray data;
     const static int containerIdOffset = 0x2EA;
@@ -23,7 +26,11 @@ private:
 
     const static int interrogationDateOffset = 0x82;
     bool checkFile(void);
-    char recordStart[] = {0x51,0x51,0x51,0x5A,0x5A};
+    const int packageStartLength = 5;
+    const QByteArray packageStart = QByteArray("\x51\x51\x51\x5A\x5A");
+    const int packageTypeLength = 2;
+
+    //char recordStart[] = {0x51,0x51,0x51,0x5A,0x5A};
 public:
     Decoder();
     Decoder(QFile *);
@@ -35,6 +42,8 @@ public:
     QDate getDate(char *); //use template!
     QDate getExtDate(QByteArray *);
     bool runDecoder();
+    bool printLog();
+    Record findNextRecord(QByteArray *data, int *pos);
 };
 
 #endif // DECODER_H

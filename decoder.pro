@@ -18,7 +18,8 @@ SOURCES += \
         decoder.cpp \
         event_record.cpp \
         main.cpp \
-        temp_record.cpp
+        temp_record.cpp \
+    record.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -28,4 +29,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     decoder.h \
     event_record.h \
-    temp_record.h
+    temp_record.h \
+    record.h
