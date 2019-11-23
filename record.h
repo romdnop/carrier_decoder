@@ -13,11 +13,13 @@ private:
     QByteArray rawData;
     int recordPointer;
     int recordLength;
+    int recordId;
 public:
     Record();
     Record(QByteArray *, int);
     bool setRawData(QByteArray *, int);
-    bool setRecord(QByteArray *rawData, int pos, int length);
+    bool setRecord(QByteArray rawData, int pos, int length);
+    void setId(int id);
     void printRaw();
     void updateType();
 };

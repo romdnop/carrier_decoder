@@ -131,7 +131,8 @@ bool Decoder::printLog()
     {
         //qDebug() << pos;
         QByteArray dataChunk = data.mid(pos, data.size());
-        record = findNextRecord(static_cast<QByteArray *>(&dataChunk),static_cast <int *>(&pos));
+        record = findNextRecord(static_cast<QByteArray *>(&data),static_cast <int *>(&pos));
+        record.setId(recordsCount);
         record.printRaw();
         recordsCount++;
     }
@@ -176,11 +177,12 @@ Record Decoder::findNextRecord(QByteArray *data, int *pos)
     currentRecordLength = ((static_cast<unsigned int>(data->at(*pos+packageStartLength+packageTypeLength+1)) & 0xFF) << 8);
     currentRecordLength |= (static_cast<unsigned int>(data->at(*pos+packageStartLength+packageTypeLength)) & 0xFF);
     //currentRecordLength = *data[(*pos+packageStartLength+1)];
-
-    *pos+=(currentRecordLength+5+2+2+4-1);
+    QByteArray chunk = *data;
+    record.setRecord(chunk.mid(*pos, currentRecordLength), *pos, currentRecordLength);
+    *pos+=(currentRecordLength+5+2+2+4);
     //qDebug() << "Pos:" << QString("%1").arg(*pos,0,16) << "Length:" << QString("%1").arg(currentRecordLength,0,16);
     //record.setRawData(data, (currentRecordLength+packageStartLength+4+2));
-    record.setRecord((data), *pos, currentRecordLength);
+
     return record;
 }
 

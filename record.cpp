@@ -23,6 +23,8 @@ bool Record::setRawData(QByteArray *rawData, int length)
 
 void Record::updateType(void)
 {
+    //qDebug() << QString("%1").arg(rawData[recordPointer + 5],0,16);
+
     switch(rawData[5])
     {
         case '\x0E':
@@ -46,18 +48,23 @@ void Record::updateType(void)
     }
 }
 
-bool Record::setRecord(QByteArray *rawData, int pos, int length)
+bool Record::setRecord(QByteArray rawData, int pos, int length)
 {
     recordLength = length;
     recordPointer = pos;
-    this->rawData = rawData->mid(0, recordLength);
+    this->rawData = rawData;
     updateType();
     return true;
 }
 
+void Record::setId(int id)
+{
+    recordId = id;
+}
 
 void Record::printRaw()
 {
     //qDebug() << rawData;
-    qDebug() << "Pos:" << QString("%1").arg(recordPointer,0,16) << "Length:" << QString("%1").arg(recordLength,0,16) << "Type: " << recordType;
+    qDebug() << "\nId: "<< recordId <<"Pos:" << QString("%1").arg(recordPointer,0,16) << "Length:" << QString("%1").arg(recordLength,0,16) << "Type: " << recordType;
+    qDebug() << rawData.toHex() << "\n";
 }
