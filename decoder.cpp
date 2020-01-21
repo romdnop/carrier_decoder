@@ -113,6 +113,8 @@ QDate Decoder::getDate(char *array)
 }
 
 
+
+
 bool Decoder::printLog()
 {
     int recordsCount = 0;
@@ -121,6 +123,7 @@ bool Decoder::printLog()
     int tempRecordsCount = 0;
     int calRecords = 0;
     int headRecords = 0;
+    int infoRecords = 0;
     //int j=0;
     qDebug() << "File size: "<< data.size() << " bytes.";
     //QByteArrayMatcher matcher(packageStart);
@@ -134,6 +137,26 @@ bool Decoder::printLog()
         record = findNextRecord(static_cast<QByteArray *>(&data),static_cast <int *>(&pos));
         record.setId(recordsCount);
         record.printRaw();
+        switch(record.getRecordType())
+        {
+            case Record::CAL_REC:
+                calRecords++;
+                break;
+            case Record::CONT_REC:
+                containerRecord++;
+                break;
+            case Record::EVENT_REC:
+                eventRecordsCount++;
+                break;
+            case Record::TEMP_REC:
+                tempRecordsCount++;
+                break;
+            case Record::INFO_REC:
+                headRecords++;
+                break;
+            default:
+                break;
+        }
         recordsCount++;
     }
 

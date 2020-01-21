@@ -15,6 +15,9 @@ int main(int argc, char *argv[])
 
     QFile file("C:\\Users\\Dima\\Desktop\\decoder\\carrier_decoder\\CRLU1396469.dcx");
 
+    //QFile file("C:\\Users\\Dima\\Desktop\\decoder\\carrier_decoder\\TRIU8060312.dcx");
+
+
     Decoder *decoder = new Decoder(&file);
     //decoder->getContainerId();
     decoder->getContainerInfo();

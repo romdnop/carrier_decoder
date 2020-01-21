@@ -44,6 +44,7 @@ public:
     bool runDecoder();
     bool printLog();
     Record findNextRecord(QByteArray *data, int *pos);
+
 };
 
 #endif // DECODER_H
