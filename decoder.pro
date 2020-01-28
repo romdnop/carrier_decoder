@@ -1,4 +1,5 @@
 QT -= gui
+QT += sql
 
 CONFIG += c++11 console staticlibs
 CONFIG -= app_bundle
@@ -19,7 +20,8 @@ SOURCES += \
         event_record.cpp \
         main.cpp \
         temp_record.cpp \
-    record.cpp
+    record.cpp \
+    event.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -30,4 +32,5 @@ HEADERS += \
     decoder.h \
     event_record.h \
     temp_record.h \
-    record.h
+    record.h \
+    event.h

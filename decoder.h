@@ -5,8 +5,13 @@
 #include <QDebug>
 #include <QDate>
 #include <QTime>
+#include <QDateTime>
 #include <QByteArrayMatcher>
 #include "record.h"
+#include "temp_record.h"
+#include "event.h"
+#include <QtSql>
+
 
 class Decoder
 {
@@ -14,7 +19,18 @@ class Decoder
 private:
 
     QFile *file;
+    QFile *logFile;
+    QTextStream log;
     QByteArray data;
+    QSqlDatabase cmdDb;
+
+    QList <Record> recordsList;
+    QList <Event> eventsList;
+
+    std::map<QDateTime, char> runHoursTable;
+
+    QDateTime lastEventDateTime;
+
     const static int containerIdOffset = 0x2EA;
     const static int containerIdLen = 11;
     int controllerVersionOffset = 0x20;
@@ -29,6 +45,7 @@ private:
     const int packageStartLength = 5;
     const QByteArray packageStart = QByteArray("\x51\x51\x51\x5A\x5A");
     const int packageTypeLength = 2;
+    QDateTime currentDateTime;
 
     //char recordStart[] = {0x51,0x51,0x51,0x5A,0x5A};
 public:
@@ -44,7 +61,22 @@ public:
     bool runDecoder();
     bool printLog();
     Record findNextRecord(QByteArray *data, int *pos);
-
+    bool findNextLogTemp(QByteArray *data, int *pos);
+    TempRecord parseTempBlock(QByteArray data);
+    int getInt(QByteArray rawData);
+    int getIntLSB(QByteArray rawData);
+    float getFloat(QByteArray rawData);
+    float getFloatLSB(QByteArray rawData);
+    void parseRecord(Record record);
+    void parseEventBlock(QByteArray data);
+    bool findNextEvent(QByteArray *data, int *pos);
+    //bool addLogFile(QFile *file);
+    //bool logToFile(QString str);
+    bool initLog(QFile *file);
+    void printRecord(Record rec);
+    QString findInDB(int cmd);
+    bool initDB(QString path);
+    QDateTime getLastEventDateTime();
 };
 
 #endif // DECODER_H
